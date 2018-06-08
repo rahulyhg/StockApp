@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+
+let apiUrl = 'http://localhost/stockApp/api/';
 
 @Injectable({
   providedIn: 'root'
@@ -8,17 +10,16 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  getUserDetails(username, password){ //post api user
-
+  doLogin(credentials, type) {
     return new Promise((resolve, reject) => {
       let headers = new Headers();
-        this.http.post('api/auth.php', {username, password})
-          .subscribe(res => {
-            resolve(res);
-          }, (err) => {
-            reject(err);
+      this.http.post(apiUrl + type, credentials)
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
         });
-      });
+    });
     // return this.http.post('http://localhost/api/auth.php', {
     //   username,
     //   password

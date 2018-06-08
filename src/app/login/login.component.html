@@ -1,3 +1,31 @@
+<!-- <div class="page-header" style="background-image: url('./assets/img/sections/bruno-abatti.jpg');">
+  <div class="filter"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 ml-auto mr-auto">
+        <div class="card card-register">
+          <h3 class="card-title">Welcome</h3>
+          <form class="register-form ng-untouched ng-pristine ng-valid" novalidate="">
+            <label>Email</label>
+            <input class="form-control no-border" placeholder="Email" type="email">
+
+            <label>Password</label>
+            <input class="form-control no-border" placeholder="Password" type="password">
+            <button class="btn btn-danger btn-block btn-round">Login</button>
+          </form>
+          <div class="forgot">
+            <a class="btn btn-link btn-danger" href="#paper-kit">Forgot password?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-footer text-center">
+      <h6>2018, made with
+        <i class="fa fa-heart heart"></i> by Creative Tim</h6>
+    </div>
+  </div>
+</div>
+</div> -->
 <div class="limiter">
   <div class="container-login100">
     <div class="wrap-login100">
@@ -10,30 +38,30 @@
       <form class="login100-form validate-form" (submit)="loginUser($event)">
         <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
           <span class="label-input100">อีเมล์</span>
-          <input class="input100" type="text" name="username" placeholder="ใส่อีเมล์" id="username">
+          <input class="input100" type="text" name="user" placeholder="ใส่อีเมล์" [(ngModel)]="loginData.username" required>
           <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
           <span class="label-input100">รหัสผ่าน</span>
-          <input class="input100" type="password" name="pass" placeholder="ใส่รหัสผ่าน" id="password">
+          <input class="input100" type="password" name="pass" placeholder="ใส่รหัสผ่าน" [(ngModel)]="loginData.password" required>
           <span class="focus-input100"></span>
         </div>
 
-        <div class="flex-sb-m w-full p-b-30">
-          <!-- <div class="contact100-form-checkbox">
+        <!-- <div class="flex-sb-m w-full p-b-30">
+          <div class="contact100-form-checkbox">
             <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
             <label class="label-checkbox100" for="ckb1">
               Remember me
             </label>
-          </div> -->
+          </div>
 
-          <!-- <div>
+          <div>
             <a href="#" class="txt1">
               Forgot Password?
             </a>
-          </div> -->
-        </div>
+          </div>
+        </div> -->
 
         <div class="container-login100-form-btn">
           <button class="login100-form-btn" type="submit">
@@ -44,5 +72,3 @@
     </div>
   </div>
 </div>
-
-
