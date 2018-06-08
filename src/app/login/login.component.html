@@ -1,22 +1,22 @@
 <div class="limiter">
   <div class="container-login100">
     <div class="wrap-login100">
-      <div class="login100-form-title" style="background-image: url(../assets/images/bg-01.jpg);">
+      <div class="login100-form-title" style="background-image: url(assets/images/bg-01.jpg);">
         <span class="login100-form-title-1">
           เข้าสู่ระบบ
         </span>
       </div>
 
-      <form class="login100-form validate-form">
+      <form class="login100-form validate-form" (submit)="loginUser($event)">
         <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
           <span class="label-input100">อีเมล์</span>
-          <input class="input100" type="text" name="username" placeholder="ใส่อีเมล์">
+          <input class="input100" type="text" name="username" placeholder="ใส่อีเมล์" id="username">
           <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
           <span class="label-input100">รหัสผ่าน</span>
-          <input class="input100" type="password" name="pass" placeholder="ใส่รหัสผ่าน">
+          <input class="input100" type="password" name="pass" placeholder="ใส่รหัสผ่าน" id="password">
           <span class="focus-input100"></span>
         </div>
 
