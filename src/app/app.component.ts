@@ -14,7 +14,7 @@ export class AppComponent {
 
     isMap(path){
       var titlee = this.location.prepareExternalUrl(this.location.path());
-      titlee = titlee.slice( 1 );
+      titlee = titlee.slice( 7 );
       if(path == titlee){
         return false;
       }
@@ -25,7 +25,7 @@ export class AppComponent {
 
     isLogin(path){
       var titlee = this.location.prepareExternalUrl(this.location.path());
-      titlee = titlee.slice( 24 );
+      titlee = titlee.slice( 7 );
       console.log(titlee);
       if(path == titlee){
         return true;

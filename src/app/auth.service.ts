@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-let apiUrl = 'http://localhost/stockApp/api/';
+let apiUrl = 'http://localhost:1234/api/';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,8 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   doLogin(credentials, type) {
-    return this.http.post<any>(apiUrl + type, credentials);
+    console.log(credentials);
+    return this.http.post(apiUrl + type, JSON.stringify(credentials));
     // return this.http.post('http://localhost/api/auth.php', {
     //   username,
     //   password

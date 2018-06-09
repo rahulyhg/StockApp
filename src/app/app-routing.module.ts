@@ -23,7 +23,7 @@ const routes: Routes =[
   { path: 'maps',           component: MapsComponent },
   { path: 'notifications',  component: NotificationsComponent },
   { path: 'upgrade',        component: UpgradeComponent },
-  { path: '',               redirectTo: '/login', pathMatch: 'full' }
+  { path: '',               redirectTo: '/login', pathMatch: 'full'}
 ];
 
 @NgModule({
