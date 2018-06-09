@@ -22,4 +22,16 @@ export class AppComponent {
         return true;
       }
     }
+
+    isLogin(path){
+      var titlee = this.location.prepareExternalUrl(this.location.path());
+      titlee = titlee.slice( 24 );
+      console.log(titlee);
+      if(path == titlee){
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
 }

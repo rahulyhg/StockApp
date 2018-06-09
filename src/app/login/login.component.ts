@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../auth.service'
+import { CookieService } from 'ng-cookie/dist/cookie.service';
+import { AppRoutingModule } from '../app-routing.module';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,41 +12,29 @@ import { AuthService } from '../auth.service'
 })
 export class LoginComponent implements OnInit {
 
-  resposeData: any;
   loginData =  {};
-  userDataDetails: any;
+  resposeData: any;
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private cookie: CookieService, private router: Router) { }
 
   ngOnInit() {
   }
 
-  loginUser(event){
-    console.log(this.loginData);
-    this.auth.doLogin(this.loginData, "login").then((result) => {
-      this.resposeData = result;
-      console.log(this.resposeData);
-      localStorage.setItem('userData', JSON.stringify(this.resposeData))
-      const data = JSON.parse(localStorage.getItem('userData'));
-      this.userDataDetails = data.userData;
-      }
-    );
-    if(this.loginData== 'admin' && this.loginData == 'admin'){
-
-    }
-    // event.preventDefault();
-    // const target = event.target;
-    // const username = target.querySelector('#username').value
-    // const password = target.querySelector('#password').value
-    // this.Auth.doLogin(username, password).then((result) => {
-    //   this.resData = result;
-    //   console.log(this.resData)
-    //   if(this.resData.success){
-
-    //   } else {
-    //     window.alert("ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง!")
-    //   }
-    // });
+  loginUser(){
+    this.auth.doLogin(this.loginData, "login")
+      .subscribe(
+        res => {
+          this.resposeData = JSON.parse(JSON.stringify(res));
+          //console.log(this.resposeData.userData.UserID);
+          this.cookie.set_cookie("UID", this.resposeData.userData.UserID,1);
+          this.cookie.set_cookie("SSID", this.resposeData.userData.token, 1);
+          if(this.resposeData.success){
+            this.router.navigate(['/dashboard']);
+            this.auth.isLoggedIn = true;
+          }
+        },
+        err => console.log(err)
+      )
   }
 
 }

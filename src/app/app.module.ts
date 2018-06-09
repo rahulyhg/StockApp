@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Route, RouterModule } from '@angular/router';
+import { CookieService } from 'ng-cookie/dist/cookie.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { NavbarModule } from './shared/navbar/navbar.module';
@@ -22,6 +23,7 @@ import { IconsComponent } from './icons/icons.component';
 import { MapsComponent } from './maps/maps.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { UpgradeComponent } from './upgrade/upgrade.component';
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,7 @@ import { UpgradeComponent } from './upgrade/upgrade.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClient,
+    HttpClientModule,
     FormsModule,
     NgbModule.forRoot(),
     NavbarModule,
@@ -47,7 +49,11 @@ import { UpgradeComponent } from './upgrade/upgrade.component';
     SidebarModule,
     LbdModule
   ],
-  providers: [],
+  providers: [AuthService, CookieService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor(private auth: AuthService) { }
+
+}

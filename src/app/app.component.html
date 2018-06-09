@@ -1,5 +1,7 @@
-<router-outlet></router-outlet>
-<!-- <div class="wrapper">
+<div *ngIf="isLogin('login')">
+  <router-outlet></router-outlet>
+</div>
+<div class="wrapper" *ngIf="!isLogin('login')">
   <div class="sidebar" data-color="blue" data-image="">
       <app-sidebar></app-sidebar>
       <div class="sidebar-background" style="background-image: url(/assets/img/sidebar-5.jpg)"></div>
@@ -12,4 +14,4 @@
           <footer-cmp></footer-cmp>
       </div>
   </div>
-</div> -->
+</div>
