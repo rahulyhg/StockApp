@@ -10,13 +10,13 @@
       <form class="login100-form validate-form" (submit)="loginUser($event)">
         <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
           <span class="label-input100">อีเมล์</span>
-          <input class="input100" type="text" name="user" placeholder="ใส่อีเมล์" [(ngModel)]="loginData.username" required>
+          <input class="input100" type="text" name="user" placeholder="ใส่อีเมล์" [(ngModel)]="user" required>
           <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
           <span class="label-input100">รหัสผ่าน</span>
-          <input class="input100" type="password" name="pass" placeholder="ใส่รหัสผ่าน" [(ngModel)]="loginData.password" required>
+          <input class="input100" type="password" name="pass" placeholder="ใส่รหัสผ่าน" [(ngModel)]="pass" required>
           <span class="focus-input100"></span>
         </div>
 

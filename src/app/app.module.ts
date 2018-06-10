@@ -23,7 +23,7 @@ import { IconsComponent } from './icons/icons.component';
 import { MapsComponent } from './maps/maps.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { UpgradeComponent } from './upgrade/upgrade.component';
-import { AuthService } from './auth.service';
+import { ApiService } from './api.service';
 
 @NgModule({
   declarations: [
@@ -49,11 +49,7 @@ import { AuthService } from './auth.service';
     SidebarModule,
     LbdModule
   ],
-  providers: [AuthService, CookieService],
+  providers: [ApiService, CookieService],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-
-  constructor(private auth: AuthService) { }
-
-}
+export class AppModule { }
