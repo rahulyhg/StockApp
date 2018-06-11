@@ -27,27 +27,30 @@ export class LoginComponent implements OnInit {
   loginUser(){
     let jsonData = {
       name: 'generateToken',
-      parm: {
+      param: {
         email: this.user,
         password: this.pass
       }
     };
-    console.log(jsonData);
-    // this.auth.doLogin(null)
-    //   .subscribe(
-    //     res => {
-    //       this.resposeData = JSON.parse(JSON.stringify(res));
-    //       //console.log(this.resposeData.userData.UserID, this.resposeData.userData.token);
-    //       this.cookie.set_cookie("UID", this.resposeData.userData.UserID,1);
-    //       this.cookie.set_cookie("SSID", this.resposeData.userData.token, 1);
-    //       //console.log(this.cookie.get_cookie("UID"),this.cookie.get_cookie("SSID"));
-    //       if(this.resposeData.success){
-    //         this.router.navigate(['/dashboard']);
-    //         this.auth.isLoggedIn = true;
-    //       }
-    //     },
-    //     err => console.log(err)
-    //   );
+    //console.log(jsonData);
+    this.auth.doLogin(jsonData)
+      .subscribe(
+        res => {
+          this.resposeData = JSON.parse(JSON.stringify(res));
+          //console.log(this.resposeData.userData.UserID, this.resposeData.userData.token);
+          // this.cookie.set_cookie("UID", this.resposeData.userData.UserID,1);
+          // this.cookie.set_cookie("SSID", this.resposeData.userData.token, 1);
+          //console.log(this.cookie.get_cookie("UID"),this.cookie.get_cookie("SSID"));
+          if(this.resposeData.response.status == 200){
+            this.router.navigate(['/dashboard']);
+            this.auth.isLoggedIn = true;
+          } else {
+            this.router.navigate(['/']);
+            this.auth.isLoggedIn = false;
+          }
+        },
+        err => { console.log(err); this.auth.isLoggedIn =  false;}
+      );
   }
 
 }

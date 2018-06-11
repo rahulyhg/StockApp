@@ -7,26 +7,31 @@
     protected $request;
     protected $serviceName;
     protected $param;
+    protected $dbConn;
 
     public function __construct() {
 
       if($_SERVER['REQUEST_METHOD'] !== 'POST'){
         $this->throwError(REQUEST_METHOD_NOT_VALID, 'Request Method is not valid.');
       }
-
       $hadler = fopen('php://input', 'r');
       $this->request = stream_get_contents($hadler);
       $this->validateRequest();
 
+      $db = new DbConnect;
+			$this->dbConn = $db->connect();
+
+			if( 'generatetoken' != strtolower( $this->serviceName) ) {
+				$this->validateToken();
+			}
     }
 
     public function validateRequest() {
-
       //echo $_SERVER['CONTENT_TYPE']; exit;
       if($_SERVER['CONTENT_TYPE'] !== 'application/json'){
         $this->throwError(REQUEST_CONTENTTYPE_NOT_VALID, 'Request content is not valid.');
       }
-
+      //print_r($_SERVER['CONTENT_TYPE']);
       $data = json_decode($this->request, true);
 
       if(!isset($data['name']) || $data['name'] == ""){
@@ -40,16 +45,6 @@
       }
       $this->param = $data['param'];
       //print_r($data);
-    }
-
-    public function processApi() {
-      $api = new API;
-      $rMethod = new reflectionMethod('API', $this->serviceName);
-      if(!method_exists($api, $this->serviceName)) {
-        $this->throwError(API_DOST_NOT_EXIST, "API does not exitst.");
-      }
-      $rMethod->invoke($api);
-
     }
 
     public function validateParameter($fieldName, $value, $dataType, $requred = true) {
@@ -81,14 +76,41 @@
           $this->throwError(VALIDATE_PARAMETER_DATATYPE, "Datatype is not valid for ".$fieldName);
           break;
       }
-
       return $value;
+    }
 
+    public function validateToken() {
+			try {
+				$token = $this->getBearerToken();
+				$payload = JWT::decode($token, SECRETE_KEY, ['HS256']);
+
+				$stmt = $this->dbConn->prepare("SELECT * FROM users WHERE id = :userId");
+				$stmt->bindParam(":userId", $payload->userId);
+				$stmt->execute();
+				$user = $stmt->fetch(PDO::FETCH_ASSOC);
+				if(!is_array($user)) {
+					$this->returnResponse(INVALID_USER_PASS, "This user is not found in our database.");
+				}
+
+				if( $user['active'] == 0 ) {
+					$this->returnResponse(USER_NOT_ACTIVE, "This user may be decactived. Please contact to admin.");
+				}
+				$this->userId = $payload->userId;
+			} catch (Exception $e) {
+				$this->throwError(ACCESS_TOKEN_ERRORS, $e->getMessage());
+			}
+    }
+
+    public function processApi() {
+      $api = new API;
+      $rMethod = new reflectionMethod('API', $this->serviceName);
+      if(!method_exists($api, $this->serviceName)) {
+        $this->throwError(API_DOST_NOT_EXIST, "API does not exitst.");
+      }
+      $rMethod->invoke($api);
     }
 
     public function throwError($code, $message) {
-
-      header('content-type: application/json');
       $errorMsg = json_encode(['error'=>['status'=>$code, 'message'=>$message]]);
       echo $errorMsg; exit;
 
