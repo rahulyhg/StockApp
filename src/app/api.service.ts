@@ -17,19 +17,28 @@ const httpOptions = {
 })
 export class ApiService {
 
-  redirectUrl: string;
-  isLoggedIn = false;
+
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+
+  private redirectUrl: string;
+  private isLoggedInStatus = false;
 
   constructor(private http: HttpClient) { }
 
+  setLoggedIn(value: boolean){
+    this.isLoggedInStatus = value;
+  }
+
+  get isLoggedIn(){
+    return this.isLoggedInStatus;
+  }
+
   doLogin(credentials) {
     return this.http.post(apiUrl, JSON.stringify(credentials), httpOptions);
-    // return this.http.post('http://localhost/api/auth.php', {
-    //   username,
-    //   password
-    // }).subscribe(data => {
-    //   console.log(data, " is real!!");
-    // })
-
   }
 }

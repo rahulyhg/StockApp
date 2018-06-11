@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ApiService } from '../api.service'
+import { AuthService } from '../api.service'
 import { CookieService } from 'ng-cookie/dist/cookie.service';
 import { Router, NavigationExtras } from '@angular/router';
 import * as $ from 'jquery';
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   pass: string;
   resposeData: any;
 
-  constructor(private auth: ApiService, private cookie: CookieService, private router: Router) {
+  constructor(private auth: AuthService, private cookie: CookieService, private router: Router) {
 
   }
 
@@ -37,19 +37,20 @@ export class LoginComponent implements OnInit {
       .subscribe(
         res => {
           this.resposeData = JSON.parse(JSON.stringify(res));
-          //console.log(this.resposeData.userData.UserID, this.resposeData.userData.token);
+          console.log(this.resposeData);
           // this.cookie.set_cookie("UID", this.resposeData.userData.UserID,1);
           // this.cookie.set_cookie("SSID", this.resposeData.userData.token, 1);
           //console.log(this.cookie.get_cookie("UID"),this.cookie.get_cookie("SSID"));
           if(this.resposeData.response.status == 200){
-            this.router.navigate(['/dashboard']);
-            this.auth.isLoggedIn = true;
+            console.log(this.resposeData)
+            this.router.navigate(['/home']);
+            this.auth.setLoggedIn(true);
           } else {
-            this.router.navigate(['/']);
-            this.auth.isLoggedIn = false;
+            this.router.navigate(['/login']);
+            this.auth.setLoggedIn(false);
           }
         },
-        err => { console.log(err); this.auth.isLoggedIn =  false;}
+        err => { console.log(err); this.auth.setLoggedIn(false);}
       );
   }
 
