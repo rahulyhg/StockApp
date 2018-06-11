@@ -1,13 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpInterceptor } from '@angular/common/http';
 import * as $ from 'jquery';
-
-let apiUrl = 'http://localhost:1234/api/';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-
+    'Content-Type': 'application/json',
   })
 };
 //'Authorization': 'my-auth-token'
@@ -15,30 +12,42 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class TokenInterceptorService implements HttpInterceptor {
 
+  constructor(private injector: Injector) { }
 
+  intercept(req, next) {
+    let authService = this.injector.get(AuthService)
+    let tokenizedReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${authService.getToken()}`,
+      }
+    });
+    return next.handle(tokenizedReq);
+  }
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  private redirectUrl: string;
-  private isLoggedInStatus = false;
+  private apiUrl = 'http://localhost:1234/api/';
 
   constructor(private http: HttpClient) { }
 
-  setLoggedIn(value: boolean){
-    this.isLoggedInStatus = value;
-  }
-
-  get isLoggedIn(){
-    return this.isLoggedInStatus;
-  }
-
   doLogin(credentials) {
-    return this.http.post(apiUrl, JSON.stringify(credentials), httpOptions);
+    return this.http.post(this.apiUrl, credentials, httpOptions);
+  }
+
+  loggedIn() {
+    return !!localStorage.getItem('TokenID');
+  }
+
+  logOut() {
+    localStorage.removeItem('TokenID')
+  }
+
+  getToken() {
+    return localStorage.getItem('TokenID');
   }
 }

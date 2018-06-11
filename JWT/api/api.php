@@ -17,7 +17,7 @@
 
     public function generateToken() {
 
-      $sql = "SELECT * FROM users WHERE Email = :username AND Password = :password";
+      $sql = "SELECT * FROM users WHERE Email = :username AND Password = :password and RoleID = 2";
 
       $username = $this->validateParameter('username', $this->param['email'], STRING);
       $password = $this->validateParameter('password', $this->param['password'], STRING);
@@ -44,7 +44,7 @@
         $paylod = [
           'iat' => time(),
           'iss' => 'localhost',
-          'exp' => time() + (60),
+          'exp' => time() + (5),
           'userID' => $userData['UserID']
         ];
 

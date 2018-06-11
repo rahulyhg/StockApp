@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../api.service'
 import { CookieService } from 'ng-cookie/dist/cookie.service';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router } from '@angular/router';
 import * as $ from 'jquery';
 
 @Component({
@@ -32,25 +32,23 @@ export class LoginComponent implements OnInit {
         password: this.pass
       }
     };
-    //console.log(jsonData);
     this.auth.doLogin(jsonData)
       .subscribe(
         res => {
           this.resposeData = JSON.parse(JSON.stringify(res));
-          console.log(this.resposeData);
-          // this.cookie.set_cookie("UID", this.resposeData.userData.UserID,1);
-          // this.cookie.set_cookie("SSID", this.resposeData.userData.token, 1);
-          //console.log(this.cookie.get_cookie("UID"),this.cookie.get_cookie("SSID"));
-          if(this.resposeData.response.status == 200){
-            console.log(this.resposeData)
-            this.router.navigate(['/home']);
-            this.auth.setLoggedIn(true);
-          } else {
-            this.router.navigate(['/login']);
-            this.auth.setLoggedIn(false);
+          console.log(res)
+          try {
+            if(this.resposeData.response.status == 200){
+              localStorage.setItem('TokenID', this.resposeData.response.result.token);
+              this.router.navigate(['home']);
+            } else {
+              this.router.navigate(['login']);
+            }
+          } catch (error) {
+            console.log(res)
           }
         },
-        err => { console.log(err); this.auth.setLoggedIn(false);}
+        err => { console.log(err);}
       );
   }
 
